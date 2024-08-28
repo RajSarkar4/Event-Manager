@@ -124,25 +124,27 @@ def login():
     return render_template('login.html', form=form, current_user=current_user)
 
 
-@app.route('/make-post', methods=['POST', 'GET'])
-@user_only
 def make_post():
-    form = PostCreationForm()
-    if form.validate_on_submit():
-        new_post = Post(
-            title=form.title.data,
-            author=current_user,
-            subtitle=form.subtitle.data,
-            date=date.today().strftime("%B %d, %Y"),
-            start_date=form.start_date.data,
-            end_date=form.end_date.data,
-            details=form.details.data,
-            form_url=form.join_url.data
-        )
-        db.session.add(new_post)
-        db.session.commit()
-        return redirect(url_for('home'))
-    return render_template('make-post.html', form=form, current_user=current_user)
+    if current_user.is_authenticated:
+        form = PostCreationForm()
+        if form.validate_on_submit():
+            new_post = Post(
+                title=form.title.data,
+                author=current_user,
+                subtitle=form.subtitle.data,
+                date=date.today().strftime("%B %d, %Y"),
+                start_date=form.start_date.data,
+                end_date=form.end_date.data,
+                details=form.details.data,
+                form_url=form.join_url.data
+            )
+            db.session.add(new_post)
+            db.session.commit()
+            return redirect(url_for('home'))
+        return render_template('make-post.html', form=form, current_user=current_user)
+    else:
+        flash("You've to login first to post any events")
+        return redirect(url_for('login'))
 
 
 @app.route('/profile/<username>')
