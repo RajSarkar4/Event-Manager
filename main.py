@@ -19,7 +19,7 @@ class Base(DeclarativeBase):
     pass
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URL', "sqlite:///posts.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URL', "postgresql://default:dcB9abvgVP4R@ep-steep-bush-a49tm2cc.us-east-1.aws.neon.tech:5432/verceldb")
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
