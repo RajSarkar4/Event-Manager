@@ -123,7 +123,7 @@ def login():
 
     return render_template('login.html', form=form, current_user=current_user)
 
-
+@app.route('/make-post', methods=['POST', 'GET'])
 def make_post():
     if current_user.is_authenticated:
         form = PostCreationForm()
